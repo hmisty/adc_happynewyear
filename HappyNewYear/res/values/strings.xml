@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, HappyNewYearActivity!</string>
     <string name="app_name">HappyNewYear</string>
-
+    <string name="send_group">当前发送</string>
+    <string name="north">北方区</string>
+    <string name="south">南方区</string>
+    <string name="send_lang">发送语言</string>
+    <string name="english">英文</string>
+    <string name="chinese">中文</string>
+    <string name="customer_carer">客服代表</string>
+    <string name="sms_template">短信模板</string>
+    <string name="gen_sendlist">生成拟发送列表</string>
+    <string name="sendlist">拟发送以下客户：</string>
+    <string name="no_name">没有待发送客户</string>
+    <string name="send">立即发送</string>
+    <string name="template1">{TO}，{FROM}给您拜年了！</string>
 </resources>

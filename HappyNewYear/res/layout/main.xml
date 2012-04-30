@@ -2,11 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical">
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-
+        android:text="@string/send_group" />
+    <RadioGroup
+        android:id="@+id/customer_group"
+        android:layout_marginLeft="@dimen/space1"
+        android:orientation="horizontal" >
+        <RadioButton
+            android:id="@+id/btn_north"
+            android:layout_weight=".5"
+            android:checked="true"
+            android:text="@string/north" />
+        <RadioButton
+            android:id="@+id/btn_south"
+            android:layout_weight=".5"
+            android:text="@string/south" />
+    </RadioGroup>
+    <View style="@style/Separator" />
+    <TextView android:text="@string/send_lang" />
+    <RadioGroup
+        android:id="@+id/customer_lang"
+        android:layout_marginLeft="@dimen/space1"
+        android:orientation="horizontal" >
+        <RadioButton
+            android:id="@+id/btn_cn"
+            android:layout_weight=".5"
+            android:checked="true"
+            android:text="@string/chinese" />
+        <RadioButton
+            android:id="@+id/btn_en"
+            android:layout_weight=".5"
+            android:text="@string/english" />
+    </RadioGroup>
+    <View style="@style/Separator" />
+    <TextView android:text="@string/customer_carer" />
+    <Spinner
+        android:id="@+id/customer_carer"
+        android:layout_marginLeft="@dimen/space1"
+        android:layout_marginRight="@dimen/space1"
+        android:entries="@array/names" />
+    <View style="@style/Separator" />
+    <TextView android:text="@string/sms_template" />
+    <EditText
+        android:id="@+id/sms_template"
+        android:layout_marginLeft="@dimen/space1"
+        android:layout_marginRight="@dimen/space1"
+        android:layout_weight="1"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:text="@string/template1" >
+    </EditText>
+    <View style="@style/Separator" />
+    <Button
+        android:id="@+id/gen_sendlist"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/space1"
+        android:layout_marginRight="@dimen/space1"
+        android:text="@string/gen_sendlist"
+        android:onClick="genSendlist"/>
 </LinearLayout>

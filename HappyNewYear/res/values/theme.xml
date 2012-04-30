@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="window_bg">#CFF</color>
+    <color name="gray">#333</color>
+    <color name="white">#FFF</color>
+    <color name="yellow">#FF0</color>
+    <color name="blue">#00F</color>
+    <color name="green">#0F0</color>
+    <dimen name="normal_font">24sp</dimen>
+    <dimen name="space1">30dip</dimen>
+
+    <style name="ADC" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/normal_font</item>
+       
+        <!--item name="android:buttonStyle">@style/Button</item-->
+    </style>
+
+    <style name="Separator">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:layout_marginTop">3dip</item>
+        <item name="android:layout_marginBottom">3dip</item>
+            <item name="android:background">@color/white</item>
+    </style>
+</resources>

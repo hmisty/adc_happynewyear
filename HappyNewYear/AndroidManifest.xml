@@ -7,9 +7,11 @@
     <uses-sdk android:minSdkVersion="8" />
 
     <application
+        android:theme="@style/ADC"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:name=".HappyNewYearActivity" >
             <intent-filter >
