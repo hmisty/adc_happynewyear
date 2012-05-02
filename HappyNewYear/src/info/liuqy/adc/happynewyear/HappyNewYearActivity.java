@@ -133,8 +133,18 @@ public class HappyNewYearActivity extends Activity {
 					
 					notes.close();
 					
+					//set defaults
+					if (!attrs.contains(Market.NORTH.toString())
+							&& !attrs.contains(Market.SOUTH.toString()))
+						attrs.add(Market.NORTH.toString());
+					
+					if (!attrs.contains(Language.CHINESE.toString())
+							&& !attrs.contains(Language.ENGLISH.toString()))
+						attrs.add(Language.CHINESE.toString());
+					
 					// only process contacts with the matching market & language
-					if (attrs.contains(market.toString()) 
+					if (attrs.contains("ADC") //FIXME for class demo only
+							&& attrs.contains(market.toString()) 
 							&& attrs.contains(lang.toString())) {
 						
 						Cursor phones = getContentResolver().query(
