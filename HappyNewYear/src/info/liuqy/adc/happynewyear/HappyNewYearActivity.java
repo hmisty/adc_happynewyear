@@ -14,10 +14,11 @@ import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
+import android.util.Log;
 
 public class HappyNewYearActivity extends Activity {
 	enum Market {
-		NORTH, SOUTH;
+		NORTH, SOUTH, ANY;
 		@Override
 		public String toString() {
 			switch (this) {
@@ -25,6 +26,8 @@ public class HappyNewYearActivity extends Activity {
 				return "NC";
 			case SOUTH:
 				return "SC";
+			case ANY:
+				return "";
 			default:
 				return super.toString();
 			}
@@ -32,7 +35,7 @@ public class HappyNewYearActivity extends Activity {
 	};
 
 	enum Language {
-		CHINESE, ENGLISH;
+		CHINESE, ENGLISH, ANY;
 		@Override
 		public String toString() {
 			switch (this) {
@@ -40,6 +43,8 @@ public class HappyNewYearActivity extends Activity {
 				return "CN";
 			case ENGLISH:
 				return "EN";
+			case ANY:
+				return "";
 			default:
 				return super.toString();
 			}
@@ -51,6 +56,11 @@ public class HappyNewYearActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		Bundle sendlist = readContacts(Market.ANY, Language.ANY);
+		for (String number : sendlist.keySet()) {
+			Log.d("XXX", "Got " + number + " => " + sendlist.getString(number));
+		}
 	}
 
 	/**
@@ -144,8 +154,8 @@ public class HappyNewYearActivity extends Activity {
 					
 					// only process contacts with the matching market & language
 					if (attrs.contains("ADC") //FIXME for class demo only
-							&& attrs.contains(market.toString()) 
-							&& attrs.contains(lang.toString())) {
+							&& (market.equals(Market.ANY) || attrs.contains(market.toString())) 
+							&& (lang.equals(Language.ANY) || attrs.contains(lang.toString()))) {
 						
 						Cursor phones = getContentResolver().query(
 								ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
