@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
-import android.provider.ContactsContract.CommonDataKinds.Note;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
-import android.util.Log;
 
 public class HappyNewYearActivity extends Activity {
 	enum Market {
@@ -82,26 +79,37 @@ public class HappyNewYearActivity extends Activity {
 		 * note> data triplets. So let's go through the contacts.
 		 */
 		Cursor cur = getContentResolver().query(
-				ContactsContract.Contacts.CONTENT_URI,
-				null, null, null, null);
+				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
 		while (cur.moveToNext()) {
 			String contactId = cur.getString(cur.getColumnIndex(Contacts._ID));
-			
-			//retrieve phone numbers
-			int phoneCount = cur.getInt(cur.getColumnIndex(Contacts.HAS_PHONE_NUMBER));
-			
-			//only process contacts with phone numbers
+
+			// retrieve phone numbers
+			int phoneCount = cur.getInt(cur
+					.getColumnIndex(Contacts.HAS_PHONE_NUMBER));
+
+			// only process contacts with phone numbers
 			if (phoneCount > 0) {
-			
-				//retrieve nickname
-			
-				//retrieve note
+
+				Cursor nicknames = getContentResolver().query(
+						Data.CONTENT_URI,
+						new String[] { Data._ID, Nickname.NAME },
+						Data.CONTACT_ID + "=?" + " AND " + Data.MIMETYPE + "='"
+								+ Nickname.CONTENT_ITEM_TYPE + "'",
+						new String[] { contactId }, null);
+
+				// only process contacts with nickname (the first one)
+				if (nicknames.moveToFirst()) {
+					String nickname = nicknames.getString(nicknames  
+                            .getColumnIndex(Nickname.NAME));
+					
+					
+				}
 				
 			}
-			
+
 		}
-		
+
 		return sendlist;
 	}
 
