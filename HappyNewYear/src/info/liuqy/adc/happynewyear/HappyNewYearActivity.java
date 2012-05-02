@@ -1,5 +1,8 @@
 package info.liuqy.adc.happynewyear;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
+import android.util.Log;
 
 public class HappyNewYearActivity extends Activity {
 	enum Market {
@@ -82,6 +86,9 @@ public class HappyNewYearActivity extends Activity {
 		Cursor cur = getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
+		// attributes for the contact
+		Set<String> attrs = new HashSet<String>();
+		
 		while (cur.moveToNext()) {
 			String contactId = cur.getString(cur.getColumnIndex(Contacts._ID));
 
@@ -111,20 +118,36 @@ public class HappyNewYearActivity extends Activity {
 	                                + Note.CONTENT_ITEM_TYPE + "'",  
 	                        new String[] { contactId }, null);
 					
-					// concatenate all notes
-					String noteinfo = "";
+					// retrieve all attributes from all notes
+					attrs.clear();
 					while (notes.moveToNext()) {
-						noteinfo += "," + notes.getString(notes  
+						String noteinfo = notes.getString(notes  
                                 .getColumnIndex(Note.NOTE));
+						String[] fragments = noteinfo.toUpperCase().split(","); //FIXME better regex?
+						for (String attr : fragments) {
+							attrs.add(attr);
+						}
 					}
 					
+					notes.close();
 					
+					// only process contacts with the matching market & language
+					if (attrs.contains(market.toString()) 
+							&& attrs.contains(lang.toString())) {
+						
+						
+						
+					}
 					
 				}
+				
+				nicknames.close();
 				
 			}
 
 		}
+		
+		cur.close();
 
 		return sendlist;
 	}
