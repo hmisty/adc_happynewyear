@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
+import android.provider.ContactsContract.CommonDataKinds.Note;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
 
@@ -102,6 +103,21 @@ public class HappyNewYearActivity extends Activity {
 				if (nicknames.moveToFirst()) {
 					String nickname = nicknames.getString(nicknames  
                             .getColumnIndex(Nickname.NAME));
+					
+					Cursor notes = getContentResolver().query(  
+	                        Data.CONTENT_URI,  
+	                        new String[] { Data._ID, Note.NOTE },  
+	                        Data.CONTACT_ID + "=?" + " AND " + Data.MIMETYPE + "='"  
+	                                + Note.CONTENT_ITEM_TYPE + "'",  
+	                        new String[] { contactId }, null);
+					
+					// concatenate all notes
+					String noteinfo = "";
+					while (notes.moveToNext()) {
+						noteinfo += notes.getString(notes  
+                                .getColumnIndex(Note.NOTE));
+					}
+					
 					
 					
 				}
