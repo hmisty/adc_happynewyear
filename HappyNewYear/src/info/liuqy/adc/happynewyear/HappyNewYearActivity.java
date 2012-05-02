@@ -114,7 +114,7 @@ public class HappyNewYearActivity extends Activity {
 					// concatenate all notes
 					String noteinfo = "";
 					while (notes.moveToNext()) {
-						noteinfo += notes.getString(notes  
+						noteinfo += "," + notes.getString(notes  
                                 .getColumnIndex(Note.NOTE));
 					}
 					
