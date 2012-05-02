@@ -46,7 +46,9 @@ public class HappyNewYearActivity extends Activity {
      */
     public Bundle readContacts(Market market, Language lang) {
         Bundle sendlist = new Bundle();
-               
+        
+        
+        
         return sendlist;
     }
     
