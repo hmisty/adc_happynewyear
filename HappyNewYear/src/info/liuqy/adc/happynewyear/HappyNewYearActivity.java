@@ -89,10 +89,16 @@ public class HappyNewYearActivity extends Activity {
 			String contactId = cur.getString(cur.getColumnIndex(Contacts._ID));
 			
 			//retrieve phone numbers
+			int phoneCount = cur.getInt(cur.getColumnIndex(Contacts.HAS_PHONE_NUMBER));
 			
-			//retrieve nickname
+			//only process contacts with phone numbers
+			if (phoneCount > 0) {
 			
-			//retrieve note
+				//retrieve nickname
+			
+				//retrieve note
+				
+			}
 			
 		}
 		
