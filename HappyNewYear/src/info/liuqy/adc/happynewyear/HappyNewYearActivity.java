@@ -2,6 +2,8 @@ package info.liuqy.adc.happynewyear;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -9,9 +11,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Nickname;
 import android.provider.ContactsContract.CommonDataKinds.Note;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Data;
-import android.util.Log;
 
 public class HappyNewYearActivity extends Activity {
 	enum Market {
@@ -135,21 +137,48 @@ public class HappyNewYearActivity extends Activity {
 					if (attrs.contains(market.toString()) 
 							&& attrs.contains(lang.toString())) {
 						
+						Cursor phones = getContentResolver().query(
+								ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+								null, Phone.CONTACT_ID + "=" + contactId, null, null);
+
+						// process all phone numbers
+						while (phones.moveToNext()) {
+							String phoneNumber = phones.getString(phones
+									.getColumnIndex(Phone.NUMBER));
+							int phoneType = phones.getInt(phones
+									.getColumnIndex(Phone.TYPE));
+							
+							if (isMobile(phoneNumber, phoneType)) {
+								sendlist.putString(phoneNumber, nickname);
+							}
+						}
 						
-						
+						phones.close();
 					}
-					
 				}
 				
 				nicknames.close();
-				
 			}
-
 		}
 		
 		cur.close();
 
 		return sendlist;
+	}
+
+	// the tricky pattern for identifying Chinese mobile numbers
+	static final Pattern MOBILE_PATTERN = Pattern.compile("(13|15|18)\\d{9}");
+
+	public boolean isMobile(String number, int type) {
+		if (type == ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE) {
+			Matcher m = MOBILE_PATTERN.matcher(number);
+			
+			if (m.find()) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }
