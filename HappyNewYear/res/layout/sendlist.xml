@@ -29,5 +29,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/space1"
         android:layout_marginRight="@dimen/space1"
-        android:text="@string/send" />
+        android:text="@string/send"
+        android:onClick="sendSms" />
+    
 </LinearLayout>
