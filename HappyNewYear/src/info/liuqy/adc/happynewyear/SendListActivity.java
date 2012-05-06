@@ -1,5 +1,6 @@
 package info.liuqy.adc.happynewyear;
 
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,25 @@ public class SendListActivity extends ListActivity {
     }
 	
 	public void handleIntent() {
-	
+        Bundle data = this.getIntent().getExtras();
+        if (data != null) {
+            Bundle sendlist = data.getParcelable(HappyNewYearActivity.SENDLIST);
+            
+            String cc = data.getString(HappyNewYearActivity.CUSTOMER_CARER);
+            String tmpl = data.getString(HappyNewYearActivity.SMS_TEMPLATE);
+            
+            tmpl = tmpl.replaceAll("\\{FROM\\}", cc);
+            
+            for (String n : sendlist.keySet()) {
+                String sms = tmpl.replaceAll("\\{TO\\}", sendlist.getString(n));
+                Map<String, String> rec = new Hashtable<String, String>();
+                rec.put(KEY_TO, n);
+                rec.put(KEY_SMS, sms);
+                smslist.add(rec);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
 	}
 
 }
