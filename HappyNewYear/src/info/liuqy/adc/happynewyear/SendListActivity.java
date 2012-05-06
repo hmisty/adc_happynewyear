@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -67,6 +68,9 @@ public class SendListActivity extends ListActivity {
                 new int[]{android.R.id.text1, android.R.id.text2});
         this.setListAdapter(adapter);
         handleIntent();
+        
+        if (smslist.size() == 0)  //FIXME need a better judge if from notification
+            loadFromDatabase();
     }
 	
 	public void handleIntent() {
@@ -228,5 +232,23 @@ public class SendListActivity extends ListActivity {
         };
         
         db = dbHelper.getWritableDatabase();
+    }
+    
+    protected void loadFromDatabase() {
+        Cursor cur = db.query(TBL_NAME, new String[]{KEY_ROWID, FIELD_TO, FIELD_SMS},
+                null, null, null, null, null);
+
+        while (cur.moveToNext()) {
+            String toNumber = cur.getString(cur.getColumnIndex(FIELD_TO));
+            String sms = cur.getString(cur.getColumnIndex(FIELD_SMS));
+            Map<String, String> rec = new Hashtable<String, String>();
+            rec.put(KEY_TO, toNumber);
+            rec.put(KEY_SMS, sms);
+            smslist.add(rec);
+        }
+        
+        cur.close();
+        
+        adapter.notifyDataSetChanged();
     }
 }
