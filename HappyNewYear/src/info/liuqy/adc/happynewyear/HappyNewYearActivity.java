@@ -56,11 +56,6 @@ public class HappyNewYearActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-		Bundle sendlist = readContacts(Market.ANY, Language.ANY);
-		for (String number : sendlist.keySet()) {
-			Log.d("XXX", "Got " + number + " => " + sendlist.getString(number));
-		}
 	}
 
 	/**
