@@ -156,9 +156,8 @@ public class SendListActivity extends ListActivity {
 					int succ = getResultCode();
 					if (succ == Activity.RESULT_OK) {
 						// TODO better notification
-						Toast.makeText(SendListActivity.this,
-								"Delivered to " + toNum + " OK!",
-								Toast.LENGTH_SHORT).show();
+						//Toast.makeText(SendListActivity.this, "Delivered to " + toNum + " OK!", Toast.LENGTH_SHORT).show();
+						notifySuccessfulDelivery("Delivered to " + toNum + " OK!", sms);
 					} else {
 						// TODO
 					}
