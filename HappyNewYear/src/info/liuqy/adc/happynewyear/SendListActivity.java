@@ -11,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -157,11 +158,13 @@ public class SendListActivity extends ListActivity {
 	}
 	
 	protected void registerReceivers() {
-		// TODO
+		this.registerReceiver(smsSentReceiver, new IntentFilter(SENT_ACTION));
+		this.registerReceiver(smsDeliveredReceiver, new IntentFilter(DELIVERED_ACTION));
 	}
 	
 	protected void unregisterReceivers() {
-		// TODO
+		this.unregisterReceiver(smsSentReceiver);
+		this.unregisterReceiver(smsDeliveredReceiver);
 	}
 	
 }
