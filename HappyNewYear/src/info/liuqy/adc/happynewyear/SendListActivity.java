@@ -33,7 +33,8 @@ public class SendListActivity extends ListActivity {
     List<Map<String, String>> smslist = new LinkedList<Map<String, String>>();
     SimpleAdapter adapter;
 
-    BroadcastReceiver smsSentReceiver, smsDeliveredReceiver;
+    static BroadcastReceiver smsSentReceiver = null;
+	static BroadcastReceiver smsDeliveredReceiver = null;
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,55 +109,59 @@ public class SendListActivity extends ListActivity {
     }
 
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onStart() {
+		super.onStart();
 		// Question for you: where is the right place to register receivers?
 		registerReceivers();
 	}
-
+	
 	@Override
-	protected void onResume() {
-		super.onResume();
+	protected void onStop() {
+		super.onStop();
 		// Question for you: where is the right place to unregister receivers?
 		unregisterReceivers();
 	}
 	
 	protected void createReceivers() {
-		smsSentReceiver = new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int idx = intent.getIntExtra(EXTRA_IDX, -1);
-                String toNum = intent.getStringExtra(EXTRA_TONUMBER);
-                String sms = intent.getStringExtra(EXTRA_SMS);
-                int succ = getResultCode();
-                if (succ == Activity.RESULT_OK) {
-                    //TODO better notification
-                    Toast.makeText(SendListActivity.this, "Sent to " + toNum + " OK!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    //TODO
-                }
-            }
-		};
+		if (smsSentReceiver == null)
+			smsSentReceiver = new BroadcastReceiver() {
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					int idx = intent.getIntExtra(EXTRA_IDX, -1);
+					String toNum = intent.getStringExtra(EXTRA_TONUMBER);
+					String sms = intent.getStringExtra(EXTRA_SMS);
+					int succ = getResultCode();
+					if (succ == Activity.RESULT_OK) {
+						// TODO better notification
+						Toast.makeText(SendListActivity.this,
+								"Sent to " + toNum + " OK!", Toast.LENGTH_SHORT)
+								.show();
+					} else {
+						// TODO
+					}
+				}
+			};
 
-		smsDeliveredReceiver = new BroadcastReceiver(){
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int idx = intent.getIntExtra(EXTRA_IDX, -1);
-                String toNum = intent.getStringExtra(EXTRA_TONUMBER);
-                String sms = intent.getStringExtra(EXTRA_SMS);
-                int succ = getResultCode();
-                if (succ == Activity.RESULT_OK) {
-                    //TODO better notification
-                    Toast.makeText(SendListActivity.this, "Delivered to " + toNum + " OK!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    //TODO
-                }
-            }
-        };
+		if (smsDeliveredReceiver == null)
+			smsDeliveredReceiver = new BroadcastReceiver() {
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					int idx = intent.getIntExtra(EXTRA_IDX, -1);
+					String toNum = intent.getStringExtra(EXTRA_TONUMBER);
+					String sms = intent.getStringExtra(EXTRA_SMS);
+					int succ = getResultCode();
+					if (succ == Activity.RESULT_OK) {
+						// TODO better notification
+						Toast.makeText(SendListActivity.this,
+								"Delivered to " + toNum + " OK!",
+								Toast.LENGTH_SHORT).show();
+					} else {
+						// TODO
+					}
+				}
+			};
 	}
-	
+
 	protected void registerReceivers() {
 		this.registerReceiver(smsSentReceiver, new IntentFilter(SENT_ACTION));
 		this.registerReceiver(smsDeliveredReceiver, new IntentFilter(DELIVERED_ACTION));
