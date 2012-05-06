@@ -98,5 +98,26 @@ public class SendListActivity extends ListActivity {
         }
     }
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// Question for you: where is the right place to register receivers?
+		registerReceivers();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// Question for you: where is the right place to unregister receivers?
+		unregisterReceivers();
+	}
+	
+	protected void registerReceivers() {
+		// TODO
+	}
+	
+	protected void unregisterReceivers() {
+		// TODO
+	}
 	
 }
