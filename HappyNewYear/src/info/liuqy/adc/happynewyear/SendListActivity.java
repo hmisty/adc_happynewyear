@@ -41,7 +41,7 @@ public class SendListActivity extends ListActivity {
     private static final int DB_VERSION = 2;
     
     private static final String TBL_NAME = "sms";
-    static final String FIELD_TO = "to";
+    static final String FIELD_TO = "to_number";
     static final String FIELD_SMS = "sms";
     static final String KEY_ROWID = "_id";
     
