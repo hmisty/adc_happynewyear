@@ -11,6 +11,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -175,6 +176,7 @@ public class SendListActivity extends ListActivity {
 					if (succ == Activity.RESULT_OK) {
 						// TODO better notification
 						//Toast.makeText(SendListActivity.this, "Delivered to " + toNum + " OK!", Toast.LENGTH_SHORT).show();
+						saveToDatabase(toNum, sms);
 						notifySuccessfulDelivery("Delivered to " + toNum + " OK!", sms);
 					} else {
 						// TODO
@@ -251,4 +253,12 @@ public class SendListActivity extends ListActivity {
         
         adapter.notifyDataSetChanged();
     }
+    
+    protected void saveToDatabase(String toNum, String sms) {
+        ContentValues values = new ContentValues();
+        values.put(FIELD_TO, "Successfully delivered to " + toNum); //FIXME string constant
+        values.put(FIELD_SMS, sms);
+        db.insert(TBL_NAME, null, values);
+    }
+    
 }
