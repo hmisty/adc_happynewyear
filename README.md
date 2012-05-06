@@ -23,10 +23,12 @@ Then set the interval to 5 seconds between sending each two SMS.
 
 ### Improve the status bar notification
 Implement a progress bar in the status bar notification to show the current SMS sending progress, like below:
+<pre>
     +--------------------+
     |HappyNewYear        |
     |********33/45**=====|
     +--------------------+
+</pre>
 33/45 means 33 sent, 45 total.
 
 ### Use background colors to distinguish the status of each SMS in SendListActivity
