@@ -14,6 +14,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -32,6 +34,14 @@ public class SendListActivity extends ListActivity {
     static final String EXTRA_SMS = "sms_content";
     
     private static final int HAPPYNEWYEAR_ID = 1;
+
+    private static final String DB_NAME = "data";
+    private static final int DB_VERSION = 2;
+    
+    private static final String TBL_NAME = "sms";
+    static final String FIELD_TO = "to";
+    static final String FIELD_SMS = "sms";
+    static final String KEY_ROWID = "_id";
     
     //[<TO, number>,<SMS, sms>]
     List<Map<String, String>> smslist = new LinkedList<Map<String, String>>();
@@ -40,11 +50,15 @@ public class SendListActivity extends ListActivity {
     static BroadcastReceiver smsSentReceiver = null;
 	static BroadcastReceiver smsDeliveredReceiver = null;
     
+    SQLiteOpenHelper dbHelper = null;
+    SQLiteDatabase db = null;
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sendlist);
         
+        initdb();
         createReceivers();
         
         adapter = new SimpleAdapter(this, smslist,
@@ -199,5 +213,20 @@ public class SendListActivity extends ListActivity {
         mNotificationManager.notify(HAPPYNEWYEAR_ID, notification);
     }
 
-    
+    protected void initdb() {
+        dbHelper = new SQLiteOpenHelper(this, DB_NAME, null, DB_VERSION) {
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                db.execSQL("create table sms (_id integer primary key autoincrement, " +
+                        "to_number text not null, sms text not null)");
+            }
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
+                //TODO on DB upgrade
+            }
+            
+        };
+        
+        db = dbHelper.getWritableDatabase();
+    }
 }
