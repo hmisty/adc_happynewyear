@@ -7,6 +7,8 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +30,8 @@ public class SendListActivity extends ListActivity {
     static final String EXTRA_IDX = "contact_adapter_idx";
     static final String EXTRA_TONUMBER = "sms_to_number";
     static final String EXTRA_SMS = "sms_content";
+    
+    private static final int HAPPYNEWYEAR_ID = 1;
     
     //[<TO, number>,<SMS, sms>]
     List<Map<String, String>> smslist = new LinkedList<Map<String, String>>();
@@ -172,4 +176,29 @@ public class SendListActivity extends ListActivity {
 		this.unregisterReceiver(smsDeliveredReceiver);
 	}
 	
+    public void notifySuccessfulDelivery(String title, String text) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
+        
+        int icon = R.drawable.ic_launcher;
+        CharSequence tickerText = "HappyNewYear";
+        long when = System.currentTimeMillis();
+        Notification notification = new Notification(icon, tickerText, when);
+        
+        Context context = getApplicationContext();
+        CharSequence contentTitle = title;
+        CharSequence contentText = text;
+        Intent notificationIntent = new Intent(this, SendListActivity.class); //if click, then open SendListActivity
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_LIGHTS;
+        
+        mNotificationManager.notify(HAPPYNEWYEAR_ID, notification);
+    }
+
+    
 }
